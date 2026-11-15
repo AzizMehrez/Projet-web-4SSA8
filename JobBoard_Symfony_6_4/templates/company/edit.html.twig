@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit job · JobBoard{% endblock %}
+
+{% block body %}
+<form class="panel" method="post">
+    <h1>Edit job</h1>
+    <label>Title
+        <input name="title" value="{{ job.title }}" required>
+    </label>
+    <label>Description
+        <textarea name="description" rows="8" required>{{ job.description }}</textarea>
+    </label>
+    <label>Contract
+        <select name="contractType">
+            {% for c in ['CDI','CDD','INTERNSHIP','FREELANCE'] %}
+                <option value="{{ c }}" {% if job.contractType == c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>Location
+        <input name="location" value="{{ job.location }}">
+    </label>
+    <label><input type="checkbox" name="remote" value="1" {% if job.remote %}checked{% endif %}> Remote</label>
+    <label><input type="checkbox" name="published" value="1" {% if job.published %}checked{% endif %}> Published</label>
+    <input type="hidden" name="_token" value="{{ csrf_token('edit-job' ~ job.id) }}">
+    <p class="job-actions">
+        <button type="submit">Save</button>
+        <a class="button" href="{{ path('company_jobs') }}">Cancel</a>
+    </p>
+</form>
+{% endblock %}

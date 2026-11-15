@@ -28,6 +28,21 @@ final class CompanyController extends AbstractController
         return $em->getRepository(Company::class)->findOneBy(['owner' => $user]);
     }
 
+    private function ownedJob(EntityManagerInterface $em, int $id): Job
+    {
+        $company = $this->company($em);
+        if (!$company) {
+            throw $this->createAccessDeniedException('No company profile for this account.');
+        }
+
+        $job = $em->getRepository(Job::class)->find($id);
+        if (!$job || $job->getCompany()?->getId() !== $company->getId()) {
+            throw $this->createNotFoundException('Job not found.');
+        }
+
+        return $job;
+    }
+
     #[Route('/jobs', name: 'company_jobs')]
     public function jobs(EntityManagerInterface $em): Response
     {
@@ -65,16 +80,10 @@ final class CompanyController extends AbstractController
                 throw $this->createAccessDeniedException();
             }
 
-            $job
-                ->setTitle((string) $request->request->get('title'))
-                ->setDescription((string) $request->request->get('description'))
-                ->setContractType((string) $request->request->get('contractType', 'CDI'))
-                ->setLocation($request->request->get('location'))
-                ->setRemote($request->request->getBoolean('remote'))
-                ->setPublished($request->request->getBoolean('published'));
-
+            $this->applyJobForm($job, $request);
             $em->persist($job);
             $em->flush();
+            $this->addFlash('success', 'Job created.');
 
             return $this->redirectToRoute('company_jobs');
         }
@@ -82,5 +91,54 @@ final class CompanyController extends AbstractController
         return $this->render('company/new.html.twig', [
             'job' => $job,
         ]);
+    }
+
+    #[Route('/jobs/{id}/edit', name: 'company_job_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+    public function edit(int $id, Request $request, EntityManagerInterface $em): Response
+    {
+        $job = $this->ownedJob($em, $id);
+
+        if ($request->isMethod('POST')) {
+            if (!$this->isCsrfTokenValid('edit-job'.$job->getId(), (string) $request->request->get('_token'))) {
+                throw $this->createAccessDeniedException();
+            }
+
+            $this->applyJobForm($job, $request);
+            $em->flush();
+            $this->addFlash('success', 'Job updated.');
+
+            return $this->redirectToRoute('company_jobs');
+        }
+
+        return $this->render('company/edit.html.twig', [
+            'job' => $job,
+        ]);
+    }
+
+    #[Route('/jobs/{id}/delete', name: 'company_job_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
+    public function delete(int $id, Request $request, EntityManagerInterface $em): Response
+    {
+        $job = $this->ownedJob($em, $id);
+
+        if (!$this->isCsrfTokenValid('delete-job'.$job->getId(), (string) $request->request->get('_token'))) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $em->remove($job);
+        $em->flush();
+        $this->addFlash('success', 'Job deleted.');
+
+        return $this->redirectToRoute('company_jobs');
+    }
+
+    private function applyJobForm(Job $job, Request $request): void
+    {
+        $job
+            ->setTitle((string) $request->request->get('title'))
+            ->setDescription((string) $request->request->get('description'))
+            ->setContractType((string) $request->request->get('contractType', 'CDI'))
+            ->setLocation($request->request->get('location'))
+            ->setRemote($request->request->getBoolean('remote'))
+            ->setPublished($request->request->getBoolean('published'));
     }
 }
