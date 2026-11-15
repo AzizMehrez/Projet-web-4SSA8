@@ -118,11 +118,21 @@ services:
     build: ./ms-interview
     ports: ["8084:8084"]
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongo-interview:27017/interview_db
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
-      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
-      SPRING_RABBITMQ_HOST: rabbitmq
+      PORT: 8084
+      MONGODB_URI: mongodb://mongo-interview:27017/interview_db
+      EUREKA_HOST: eureka-server
+      EUREKA_PORT: 8761
+      EUREKA_INSTANCE_HOST: ms-interview
+      CONFIG_SERVER_URL: http://config-server:8888
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+      APPLICATION_SERVICE_URL: http://ms-application:8083
     depends_on: [mongo-interview, eureka-server, config-server, rabbitmq]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8084/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 20s
 
   ms-notification:
     build: ./ms-notification

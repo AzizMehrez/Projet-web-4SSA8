@@ -120,9 +120,9 @@ Aziz→candidate, Rayen→job, Maryem→application, Ezzedine→interview, Dhia�
 ## E. ms-interview (Ezzedine) — 6 Q
 
 **Q45. Pourquoi MongoDB ?** Document flexible (URL, notes).  
-**Q46. Lien métier ?** `applicationId` logique, validé via Feign.  
-**Q47. Events ?** `InterviewScheduled`, `InterviewCancelled`.  
-**Q48. Profil `nodb` ?** Démarrer le squelette sans Mongo local.  
+**Q46. Lien métier ?** `applicationId` logique, vérifié en HTTP sync (axios, timeout 2 s, 3 tentatives, opossum) vers `ms-application`.  
+**Q47. Events ?** `InterviewScheduled`, `InterviewCancelled` — publiés par **ms-interview**, pas par ms-candidate.  
+**Q48. Démarrage ?** `cd Backend/ms-interview && npm start`, connecté à Mongo `interview_db` (:27017). Santé : `GET /health`.  
 **Q49. Doit-il connaître Candidate ?** Non — hors BC.  
 **Q50. Port ?** 8084.
 

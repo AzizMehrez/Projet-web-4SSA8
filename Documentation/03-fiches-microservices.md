@@ -137,7 +137,7 @@ Montrer *polyglot persistence* ; UNIQUE `(candidate_id, job_id)` robuste ; **pas
 | Direction | Service | Mode | Données |
 |---|---|---|---|
 | Appelle | ms-candidate, ms-job | **Feign sync** | validation existence / available |
-| Appelé par | ms-interview, (opt.) ms-candidate | Feign | `applicationId` |
+| Appelé par | ms-interview (HTTP sync), (opt.) ms-candidate (Feign) | sync | `applicationId` |
 | Publie | RabbitMQ | async | `ApplicationCreated`, `ApplicationStatusChanged` |
 | Consomme | RabbitMQ | async | `JobAvailabilityChanged` (cohérence éventuelle) |
 
@@ -151,19 +151,25 @@ Montrer *polyglot persistence* ; UNIQUE `(candidate_id, job_id)` robuste ; **pas
 
 ---
 
-## 4. ms-interview — Mohamed Ezzedine Zouiten — :8084 — MongoDB `interview_db`
+## 4. ms-interview — Mohamed Ezzedine Zouiten — :8084 — Node.js — MongoDB `interview_db`
+
+### Capacité, responsabilités, interdits, pourquoi séparé
+**Capacité** : planifier et annuler un entretien lié à une candidature (US-12).  
+**Responsabilités** : document `Interview` (créneau début/fin, `meetingUrl`, notes, statut), vérification synchrone que la candidature existe, publication de `InterviewScheduled` / `InterviewCancelled`.  
+**Interdits** : aucune entité `Application`, `Job` ou `Candidate` ; pas de jointure cross-DB ; le mail n’est pas envoyé dans la requête.  
+**Pourquoi séparé** : le créneau apparaît après la candidature, avec un cycle de vie et un modèle document propres. Le coupler à `ms-application` mélangerait calendrier et dépôt de candidature.
 
 ### Pourquoi MongoDB
-Document Interview avec champs optionnels variables (lien visio, notes) ; pas de schéma relationnel critique.
+Document Interview avec champs optionnels variables (lien visio, notes) ; pas de schéma relationnel critique. Stack **Node.js** (Express, Mongoose).
 
 ### Modèle (`Diagrams/er-interview.mmd`)
 
 | Champ | Type | Notes |
 |---|---|---|
 | id | String/ObjectId | PK |
-| applicationId | Long | référence logique |
-| slot | DateTime | |
-| status | String | SCHEDULED, DONE, CANCELLED |
+| applicationId | String | identifiant distant uniquement |
+| slot.start / slot.end | DateTime | créneau |
+| status | String | `SCHEDULED`, `CANCELLED` |
 | meetingUrl | String | optionnel |
 | notes | String | optionnel |
 
@@ -173,19 +179,21 @@ Document Interview avec champs optionnels variables (lien visio, notes) ; pas de
 |---|---|---|---|---|---|
 | interviews | `/api/interviews` | GET | `applicationId?`,`page`,`size` | `Interview[]` | 200 |
 | interviews | `/api/interviews/{id}` | GET | — | `Interview` | 200, 404 |
-| interviews | `/api/interviews` | POST | `{applicationId,slot,meetingUrl?,notes?}` | `Interview` | 201, 400, 404 |
-| interviews | `/api/interviews/{id}` | PUT | idem | `Interview` | 200, 400, 404 |
-| interviews | `/api/interviews/{id}/status` | PATCH | `{status}` | `Interview` | 200, 400, 404 |
+| interviews | `/api/interviews` | POST | `{applicationId, slot:{start,end}, meetingUrl?, notes?}` | `Interview` | 201, 400, 404, 503 |
+| interviews | `/api/interviews/{id}/status` | PATCH | `{status:CANCELLED, reason?}` | `Interview` | 200, 400, 404 |
+| interviews | `/api/interviews/{id}` | PATCH | idem | `Interview` | 200, 400, 404 |
 | interviews | `/api/interviews/{id}` | DELETE | — | — | 204, 404 |
+
+DELETE et PATCH **annulent** (statut `CANCELLED`) : le document reste consultable. PUT hors squelette V1.
 
 ### Interactions (I2)
 
 | Direction | Service | Mode |
 |---|---|---|
-| Appelle | ms-application | Feign sync (application existe) |
-| Publie | RabbitMQ | `InterviewScheduled`, `InterviewCancelled` |
+| Appelle | ms-application | HTTP sync (axios, timeout 2 s, 3 tentatives, circuit breaker opossum) |
+| Publie | RabbitMQ | `InterviewScheduled`, `InterviewCancelled` (`eventId` UUID) |
 
-**Failure** : CB + 503 ; pas de créneau sans validation ; events async pour mails.
+**Failure** : vérification en échec → **503** et **aucune** écriture. Candidature absente → **404**, aucune écriture. Le mail est publié après l’enregistrement (cohérence éventuelle). La Gateway valide le JWT ; planification / annulation ciblent `ROLE_RECRUITER`.
 
 ---
 

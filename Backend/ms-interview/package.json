@@ -1,0 +1,22 @@
+{
+  "name": "ms-interview",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Interview scheduling service (Validation 1 skeleton)",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.5",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "eureka-js-client": "^4.5.0",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5",
+    "opossum": "^8.4.0"
+  }
+}

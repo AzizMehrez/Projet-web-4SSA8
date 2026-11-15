@@ -216,7 +216,7 @@ Source : `Prosit2/Diagrams/context-map.mmd` · export `context-map.svg`.
 | **ms-application → ms-candidate** | **Sync OpenFeign** | Invariant : candidat existe avant postuler | Timeout 2s → retry×3 → CB → **503**, **aucune** écriture Application |
 | **ms-application → ms-offer** | **Sync OpenFeign** | Invariant : job `available=true` | Idem fail-fast |
 | Choix vs read-model local | Sync Feign retenu | Plus simple pédagogiquement ; cohérence forte à l’écriture ; pas de projection à maintenir en V1 | — |
-| ms-interview → ms-application | Sync Feign | Entretien sur candidature réelle | 503 ; pas d’orphelin |
+| ms-interview → ms-application | HTTP sync (axios + opossum) | Entretien sur candidature réelle | 503 ; pas d’orphelin |
 | **Statut candidature → notification** | **Async** event **`ApplicationStatusChanged`** | Exigence Inès : SMTP **ne bloque jamais** le POST | API OK ; messages en queue ; consumer **idempotent** (`eventId`) |
 | Création candidature → notif | Async `ApplicationCreated` | Même raison | Idem |
 | Interview → notif | Async `InterviewScheduled` / `Cancelled` | Découpler Node ↔ Python | Idem |
@@ -256,7 +256,7 @@ flowchart TB
 
   A -->|OpenFeign sync| C
   A -->|OpenFeign sync| O
-  I -->|OpenFeign sync| A
+  I -->|HTTP sync| A
 
   A -->|async events| RQ[[RabbitMQ]]
   O -->|async events| RQ

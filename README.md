@@ -3,7 +3,7 @@
 > Sujet JobBoard dérivé des monolithes fournis.  
 > **Dépôt public** : https://github.com/AzizMehrez/JobBoard-AWD-4SSA8
 
-Plateforme de recrutement découpée en microservices Spring Cloud + un service de notification Python. **Validation 1** : conception + squelettes qui compilent / démarrent — **pas** de logique métier complète.
+Plateforme de recrutement découpée en microservices Spring Cloud, un service d’entretiens **Node.js** et un service de notification Python. **Validation 1** : conception + squelettes qui compilent / démarrent — **pas** de logique métier complète.
 
 ## Équipe
 
@@ -54,6 +54,7 @@ README.md  TASKS.md  TODO.md
 
 - JDK **17**
 - Maven **3.9+**
+- Node.js **20+** (`ms-interview`)
 - Docker / Docker Compose (pour la stack complète)
 - Python **3.12+** (ms-notification + génération PPTX)
 
@@ -92,7 +93,7 @@ docker compose up --build
 - Keycloak : http://localhost:8180 (admin/admin)  
 - RabbitMQ UI : http://localhost:15672 (guest/guest)
 
-### Option B — Local sans Docker DB (profils H2 / nodb)
+### Option B — Local (H2 pour le Java, Mongo pour interview)
 
 ```bash
 cd Backend
@@ -107,13 +108,15 @@ mvn -pl api-gateway spring-boot:run
 mvn -pl ms-candidate spring-boot:run -Dspring-boot.run.profiles=h2
 mvn -pl ms-job spring-boot:run -Dspring-boot.run.profiles=h2
 mvn -pl ms-application spring-boot:run -Dspring-boot.run.profiles=h2
-mvn -pl ms-interview spring-boot:run -Dspring-boot.run.profiles=nodb
+
+# Interview (Node + Mongo sur localhost:27017)
+cd ms-interview && npm install && npm start
 
 # Notification
 cd ms-notification && pip install -r requirements.txt && uvicorn app.main:app --port 8085
 ```
 
-Health : `http://localhost:<port>/actuator/health` (notification : même chemin).
+Health Java : `http://localhost:<port>/actuator/health`. Interview : `http://localhost:8084/health`. Notification : `http://localhost:8085/actuator/health`.
 
 ## Conventions Git
 
@@ -132,7 +135,7 @@ cd Backend
 chmod +x start-all.sh && ./start-all.sh
 ```
 
-Profils sans Docker DB : `h2` (candidate/job/application), `nodb` (interview). Notification : `python -m uvicorn app.main:app --port 8085`.
+Profils sans Docker DB : `h2` (candidate/job/application). Interview : Mongo `interview_db` puis `npm start` dans `Backend/ms-interview`. Notification : `python -m uvicorn app.main:app --port 8085`.
 
 ## Documentation
 

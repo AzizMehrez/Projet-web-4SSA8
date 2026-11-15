@@ -36,6 +36,5 @@
     <module>ms-candidate</module>
     <module>ms-job</module>
     <module>ms-application</module>
-    <module>ms-interview</module>
   </modules>
 </project>

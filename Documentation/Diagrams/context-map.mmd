@@ -8,7 +8,7 @@ flowchart LR
 
   CAND -->|"Customer/Supplier Feign sync"| APP
   JOB -->|"Customer/Supplier Feign sync"| APP
-  APP -->|"Customer/Supplier Feign sync"| INT
+  APP -->|"Customer/Supplier HTTP sync"| INT
   APP -->|"Published Language events"| NOTIF
   INT -->|"Published Language events"| NOTIF
   JOB -->|"Published Language events"| NOTIF

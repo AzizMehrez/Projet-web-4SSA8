@@ -26,7 +26,7 @@
 **Règles** : une candidature max par couple (candidat, job) ; job doit être disponible.
 
 ### BC Entretien (`ms-interview`)
-**Langage** : Interview, slot, status (SCHEDULED/DONE/CANCELLED), applicationId.  
+**Langage** : Interview, slot (début/fin), status (SCHEDULED/CANCELLED), applicationId.  
 **Ne possède pas** : le profil candidat ni l’offre complète.
 
 ### BC Notification (`ms-notification`)
@@ -42,7 +42,7 @@
 |---|---|---|
 | Identité Candidat | Candidature | **Customer/Supplier** (Feign sync pour valider l’existence) |
 | Catalogue Offres | Candidature | **Customer/Supplier** (Feign sync disponibilité) |
-| Candidature | Entretien | **Customer/Supplier** (Feign : candidature existante) |
+| Candidature | Entretien | **Customer/Supplier** (HTTP sync : candidature existante) |
 | Candidature / Entretien / Offres | Notification | **Published Language** via événements RabbitMQ |
 | Keycloak | Tous (via Gateway) | **Conformist** (JWT) |
 | — | — | **Shared Kernel évité** (pas de schéma / lib métier partagés) |

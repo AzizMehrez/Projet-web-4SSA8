@@ -1,10 +1,17 @@
+%% InterviewScheduled and InterviewCancelled are published by ms-interview.
+%% CandidateDeleted is the only event that leaves ms-candidate.
 flowchart LR
-  APP[ms-application]
-  JOB[ms-job]
-  INT[ms-interview]
+  subgraph producers [Producers]
+    direction TB
+    CAND[ms-candidate]
+    APP[ms-application]
+    JOB[ms-job]
+    INT[ms-interview]
+  end
   RQ[[RabbitMQ]]
   NOTIF[ms-notification]
 
+  CAND -->|CandidateDeleted| RQ
   APP -->|ApplicationCreated| RQ
   APP -->|ApplicationStatusChanged| RQ
   JOB -->|JobAvailabilityChanged| RQ

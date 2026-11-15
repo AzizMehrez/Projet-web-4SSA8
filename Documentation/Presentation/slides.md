@@ -12,6 +12,8 @@ Voir `Validation1-JobBoard.pptx`. **6 membres** · ~10 min.
 | 6 | ms-job | **Rayen** | 3:50–4:40 |
 | 7 | ms-application | **Maryem** | 4:40–5:40 |
 | 8 | ms-interview | **Ezzedine** | 5:40–6:20 |
+
+Script de la slide 8 : [`ms-interview.md`](ms-interview.md) (capacité, interdits, sync/async, `npm start`).
 | 9 | ms-notification | **Dhia** | 6:20–7:00 |
 | 10 | Plateforme (E4) | **Samer** | 7:00–8:00 |
 | 11 | Données & comm (E3) | Maryem+Dhia | 8:00–8:50 |

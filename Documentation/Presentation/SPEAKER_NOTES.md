@@ -11,7 +11,7 @@ Fichier miroir des notes embarquées dans `Validation1-JobBoard.pptx`.
 | 5 Candidate | **Aziz** | 50s | Entités, MySQL, API, Feign inbound |
 | 6 Job | **Rayen** | 50s | Category/Job, availability, event |
 | 7 Application | **Maryem** | 60s | Postgres, IDs, Feign, CB, events |
-| 8 Interview | **Ezzedine** | 50s | Mongo, applicationId, events |
+| 8 Interview | **Ezzedine** | 50s | Node :8084, Mongo, applicationId seul, HTTP sync puis `InterviewScheduled` / `InterviewCancelled`. Détail : `ms-interview.md` |
 | 9 Notification | **Dhia** | 50s | Python, RabbitMQ, avancé |
 | 10 Data/Comm | Maryem+Dhia | 50s | Matrice + catalogue events |
 | 11 Archi/démo | Aziz | 60s | architecture.svg + health + compose |

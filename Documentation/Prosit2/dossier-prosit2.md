@@ -215,7 +215,7 @@ flowchart TB
 
   A -->|OpenFeign sync| C
   A -->|OpenFeign sync| J
-  I -->|OpenFeign sync| A
+  I -->|HTTP sync| A
 
   A -->|events async| RQ[[RabbitMQ]]
   J -->|events async| RQ
@@ -263,7 +263,7 @@ Diagramme : `Documentation/Diagrams/context-map.mmd` / `.svg`.
 | Gateway → MS | Sync (lb Eureka) | Routage | 503 ; instance unhealthy retirée |
 | ms-application → ms-candidate | **Sync Feign** | Invariant : candidat existe | Timeout → retry → CB → **503**, **pas** d’écriture Application |
 | ms-application → ms-job | **Sync Feign** | Invariant : job `available` | Idem fail-fast |
-| ms-interview → ms-application | **Sync Feign** | Entretien sur candidature réelle | 503 ; pas d’interview orpheline |
+| ms-interview → ms-application | **HTTP sync** (axios + opossum) | Entretien sur candidature réelle | 503 ; pas d’interview orpheline |
 | **Changement statut candidature → notification** | **Async event** `ApplicationStatusChanged` | Exigence Ines : SMTP **ne doit jamais** bloquer le POST | API OK ; messages en queue ; consumer idempotent ; rattrapage |
 | Création candidature → mail | **Async** `ApplicationCreated` | Même raison | Idem |
 | Interview planifié → notif | **Async** `InterviewScheduled` | Découpler Node ↔ Python | Idem |

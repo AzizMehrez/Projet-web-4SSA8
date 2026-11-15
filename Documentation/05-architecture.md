@@ -12,7 +12,8 @@ Le diagramme inclut : Frontend, API Gateway, Eureka, Config Server, Keycloak, le
 |---|---|
 | **REST + JWT** | Appel HTTP synchrone authentifié (client → Gateway) |
 | **lb REST Eureka** | Routage Gateway → instance découverte via Eureka |
-| **OpenFeign sync** | Appel synchrone service-à-service (validation métier) |
+| **OpenFeign sync** | Appel synchrone Java → Java (validation métier) |
+| **HTTP sync** | Appel synchrone `ms-interview` (Node) → `ms-application` |
 | **events async** | Publication / consommation RabbitMQ (domain events) |
 | **register / config** | Enregistrement Eureka · chargement Config Server |
 | **— trait plein vers DB** | Persistance exclusive (database per service) |
@@ -25,7 +26,7 @@ Le diagramme inclut : Frontend, API Gateway, Eureka, Config Server, Keycloak, le
 | ms-candidate | 8081 | idem |
 | ms-job | 8082 | idem |
 | ms-application | 8083 | idem |
-| ms-interview | 8084 | idem |
+| ms-interview | 8084 | Node `PORT`, `docker-compose.yml` |
 | ms-notification | 8085 | `Dockerfile`, compose |
 | eureka-server | 8761 | idem |
 | config-server | 8888 | idem |

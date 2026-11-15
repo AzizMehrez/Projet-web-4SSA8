@@ -163,12 +163,12 @@ QA_PREP Q38–Q44 + Q10–Q15 (saga/outbox/éventualité).
 | Élément | Détail |
 |---|---|
 | Bounded context | BC Entretien |
-| Document | `Interview` : id, applicationId, slot, status, meetingUrl, notes |
+| Document | `Interview` : id, applicationId, slot (début/fin), status (`SCHEDULED`/`CANCELLED`), meetingUrl, notes |
 | Base | **MongoDB** `interview_db` · port **27017** |
+| Techno | Node.js, Express, Mongoose, eureka-js-client, axios, opossum, amqplib |
 | API | `/api/interviews` + `PATCH .../status` |
 | Events | `InterviewScheduled`, `InterviewCancelled` |
 | Code | `Backend/ms-interview/` |
-| Profil local sans Mongo | `nodb` |
 
 ### Ce qu’il ne doit PAS faire
 - Recréer Candidate / Job / Application.
@@ -178,19 +178,21 @@ QA_PREP Q38–Q44 + Q10–Q15 (saga/outbox/éventualité).
 US-12 (planifier/annuler entretien).
 
 ### Interactions
-- **Feign sync** → `ms-application` (la candidature existe).
-- **Async** → RabbitMQ → notification (mail entretien).
+- **HTTP sync** (axios, timeout 2 s, 3 tentatives, circuit breaker opossum) → `ms-application` (la candidature existe).
+- **Async** → RabbitMQ → notification (mail entretien, jamais dans la requête).
 
 ### À expliquer à l’oral
 1. Pourquoi Mongo (champs optionnels flexibles).  
 2. Pourquoi après candidature (BC séparé).  
-3. Feign vers application puis event.  
-4. Port 8084 / profil `nodb` pour squelette.  
+3. Vérification HTTP vers application, puis event.  
+4. Port 8084. `npm start` connecté à Mongo. Santé : `GET /health`.  
 5. Si application down → 503, pas d’interview orpheline.
 
 ### Démarrage
 ```bat
-mvn -pl ms-interview spring-boot:run -Dspring-boot.run.profiles=nodb
+cd Backend\ms-interview
+npm install
+npm start
 ```
 
 ### Q&A

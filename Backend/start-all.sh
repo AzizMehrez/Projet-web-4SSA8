@@ -15,7 +15,7 @@ mvn -pl api-gateway spring-boot:run &
 mvn -pl ms-candidate spring-boot:run -Dspring-boot.run.profiles=h2 &
 mvn -pl ms-job spring-boot:run -Dspring-boot.run.profiles=h2 &
 mvn -pl ms-application spring-boot:run -Dspring-boot.run.profiles=h2 &
-mvn -pl ms-interview spring-boot:run -Dspring-boot.run.profiles=nodb &
+( cd ms-interview && npm install && npm start ) &
 
 echo "[3/3] Starting ms-notification..."
 ( cd ms-notification && python -m uvicorn app.main:app --port 8085 ) &
@@ -23,5 +23,6 @@ echo "[3/3] Starting ms-notification..."
 echo "Eureka:        http://localhost:8761"
 echo "Gateway:       http://localhost:8080/actuator/health"
 echo "Candidate:     http://localhost:8081/actuator/health"
+echo "Interview:     http://localhost:8084/health"
 echo "Notification:  http://localhost:8085/actuator/health"
 echo "Stop with: pkill -f 'spring-boot:run' ; pkill -f 'uvicorn app.main'"

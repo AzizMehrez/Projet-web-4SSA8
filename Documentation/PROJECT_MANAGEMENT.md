@@ -103,7 +103,7 @@ Scope = nom court du service (`candidate`, `job`, `application`, `interview`, `n
 
 **Issue #40 — Skeleton ms-interview**  
 - Owner: Mohamed Ezzedine Zouiten · Labels: `service:interview`, `milestone:V1`  
-- AC: port 8084, Mongo/nodb, health UP  
+- AC: port 8084, Mongo `interview_db`, `GET /health` UP  
 
 **Issue #41 — Design Interview API + events**  
 - Owner: Mohamed Ezzedine Zouiten · Labels: `service:interview`, `type:docs`, `milestone:V1`  
