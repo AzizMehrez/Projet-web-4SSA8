@@ -1,4 +1,4 @@
-﻿# Prosit n°2 — JobBoard (TalentConnect)
+# Prosit n°2 — JobBoard (TalentConnect)
 
 ## Fichiers
 

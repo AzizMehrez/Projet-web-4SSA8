@@ -1,4 +1,4 @@
-﻿# Prosit n°2 — JobBoard monolithe → microservices
+# Prosit n°2 — JobBoard monolithe → microservices
 ≤12 slides · ~10–15 min · **6 membres** · TalentConnect · AWD 2026-2027
 
 | # | Titre | Qui | Timing |

@@ -1,4 +1,4 @@
-﻿# Prosit n°2 — JobBoard : du backend monolithique aux microservices
+# Prosit n°2 — JobBoard : du backend monolithique aux microservices
 
 **TalentConnect** · ESPRIT · Module AWD · 2026-2027  
 **Livrable** : dossier de conception (pas d’implémentation code).  

@@ -1,6 +1,6 @@
 # Prosit 1 — Audit statique Symfony 6.4 JobBoard
 
-> Analyse **statique uniquement** (pas d’exécution requise). Sources : `JobBoard_Symfony_6_4/JobBoard_Symfony_6_4/`.
+> Analyse **statique uniquement** (pas d’exécution requise). Sources : `JobBoard_Symfony_6_4/`.
 
 ## 1. Problématique
 

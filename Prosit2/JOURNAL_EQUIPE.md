@@ -1,4 +1,4 @@
-﻿# Journal d’équipe — Prosit n°2 JobBoard (TalentConnect)
+# Journal d’équipe — Prosit n°2 JobBoard (TalentConnect)
 
 > Décisions **collectives** · **6 membres**.  
 
