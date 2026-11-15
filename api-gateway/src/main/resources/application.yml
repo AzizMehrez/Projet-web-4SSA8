@@ -1,0 +1,44 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: ms-candidate
+          uri: lb://ms-candidate
+          predicates:
+            - Path=/api/candidates/**
+        - id: ms-job
+          uri: lb://ms-job
+          predicates:
+            - Path=/api/jobs/**
+        - id: ms-application
+          uri: lb://ms-application
+          predicates:
+            - Path=/api/applications/**
+        - id: ms-interview
+          uri: lb://ms-interview
+          predicates:
+            - Path=/api/interviews/**
+        - id: ms-notification
+          uri: lb://ms-notification
+          predicates:
+            - Path=/api/notifications/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
