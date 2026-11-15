@@ -23,7 +23,7 @@ public class Application {
     @Version
     private long version;
 
-    public enum Status { SUBMITTED, UNDER_REVIEW, INTERVIEW, ACCEPTED, REJECTED, WITHDRAWN }
+    public enum Status { SUBMITTED, UNDER_REVIEW, SHORTLISTED, INTERVIEW, ACCEPTED, REJECTED, WITHDRAWN }
 
     protected Application() {
     }

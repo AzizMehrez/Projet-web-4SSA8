@@ -12,7 +12,21 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
+  mvc:
+    problemdetails:
+      enabled: true
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connect-timeout: 2000
+            read-timeout: 2000
   rabbitmq:
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
     listener:
       simple:
         auto-startup: false
@@ -41,17 +55,11 @@ management:
     rabbit:
       enabled: false
 
-# Resilience4j defaults (wired when Feign clients are used in V2)
 resilience4j:
   timelimiter:
     configs:
       default:
         timeout-duration: 2s
-  retry:
-    configs:
-      default:
-        max-attempts: 3
-        wait-duration: 500ms
   circuitbreaker:
     configs:
       default:
