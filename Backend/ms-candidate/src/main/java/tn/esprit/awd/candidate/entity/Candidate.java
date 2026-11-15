@@ -1,9 +1,89 @@
 package tn.esprit.awd.candidate.entity;
 
-/** Placeholder entity — no business logic in Validation 1. */
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "candidate")
 public class Candidate {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @Column(nullable = false)
+    private String firstname;
+
+    @Column(nullable = false)
+    private String lastname;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    /** Owning side: candidate.address_id → address.id (same DB, same BC). */
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id", unique = true)
+    private Address address;
+
+    public Candidate() {
+    }
+
+    public Candidate(String firstname, String lastname, String email) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+    }
+
+    public void setAddress(Address address) {
+        if (this.address != null) {
+            this.address.setCandidate(null);
+        }
+        this.address = address;
+        if (address != null) {
+            address.setCandidate(this);
+        }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
 }
