@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Confirmation de votre candidature #{{ applicationId }} — TalentConnect{% endblock %}
+
+{% block content %}
+<h2>Bonjour {{ candidateName | default("Candidat") }},</h2>
+
+<p>Nous vous confirmons la bonne réception de votre candidature pour le poste proposé sur la plateforme <strong>TalentConnect</strong>.</p>
+
+<div class="card">
+    <div class="card-row">
+        <span class="card-label">Numéro de candidature :</span>
+        <span class="card-value">#{{ applicationId }}</span>
+    </div>
+    {% if jobTitle %}
+    <div class="card-row">
+        <span class="card-label">Poste :</span>
+        <span class="card-value"><strong>{{ jobTitle }}</strong></span>
+    </div>
+    {% endif %}
+    <div class="card-row">
+        <span class="card-label">Référence offre (Job ID) :</span>
+        <span class="card-value">{{ jobId }}</span>
+    </div>
+    <div class="card-row">
+        <span class="card-label">Statut initial :</span>
+        <span class="card-value"><span class="badge badge-primary">DÉPOSÉE</span></span>
+    </div>
+    <div class="card-row">
+        <span class="card-label">Date de soumission :</span>
+        <span class="card-value">{{ occurredAt }}</span>
+    </div>
+</div>
+
+<p>Le recruteur étudie actuellement votre dossier. Vous recevrez un e-mail dès qu'une mise à jour sera apportée à votre candidature.</p>
+
+<p>Bonne chance dans votre processus de recrutement !</p>
+<p>L'équipe Recrutement TalentConnect</p>
+{% endblock %}

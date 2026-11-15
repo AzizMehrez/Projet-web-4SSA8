@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Annulation de votre entretien #{{ interviewId }} — TalentConnect{% endblock %}
+
+{% block content %}
+<h2>Bonjour {{ candidateName | default("Candidat") }},</h2>
+
+<p>Nous vous informons que votre entretien prévu pour la candidature <strong>#{{ applicationId }}</strong> a été annulé.</p>
+
+<div class="card">
+    <div class="card-row">
+        <span class="card-label">Identifiant entretien :</span>
+        <span class="card-value">#{{ interviewId }}</span>
+    </div>
+    <div class="card-row">
+        <span class="card-label">Motif de l'annulation :</span>
+        <span class="card-value"><span class="badge badge-danger">{{ reason | default("Annulé par le recruteur") }}</span></span>
+    </div>
+    <div class="card-row">
+        <span class="card-label">Date de notification :</span>
+        <span class="card-value">{{ occurredAt }}</span>
+    </div>
+</div>
+
+<p>Si un nouveau créneau doit être reprogrammé, le recruteur prendra prochainement contact avec vous par e-mail.</p>
+
+<p>Nous vous remercions pour votre compréhension.</p>
+<p>L'équipe Recrutement TalentConnect</p>
+{% endblock %}
+

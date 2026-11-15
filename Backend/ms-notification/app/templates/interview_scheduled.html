@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Convocation à un entretien — Candidature #{{ applicationId }}{% endblock %}
+
+{% block content %}
+<h2>Bonjour {{ candidateName | default("Candidat") }},</h2>
+
+<p>Félicitations ! Un entretien de recrutement a été planifié pour faire suite à votre candidature <strong>#{{ applicationId }}</strong>.</p>
+
+<div class="card">
+    <div class="card-row">
+        <span class="card-label">Identifiant entretien :</span>
+        <span class="card-value">#{{ interviewId }}</span>
+    </div>
+    <div class="card-row">
+        <span class="card-label">Date & Heure (Créneau) :</span>
+        <span class="card-value"><strong>{{ slot }}</strong></span>
+    </div>
+    {% if jobTitle %}
+    <div class="card-row">
+        <span class="card-label">Poste :</span>
+        <span class="card-value">{{ jobTitle }}</span>
+    </div>
+    {% endif %}
+    {% if meetingUrl %}
+    <div class="card-row">
+        <span class="card-label">Lien de la visioconférence :</span>
+        <span class="card-value"><a href="{{ meetingUrl }}" target="_blank" style="color: #1e40af; word-break: break-all;">{{ meetingUrl }}</a></span>
+    </div>
+    {% endif %}
+    {% if notes %}
+    <div class="card-row">
+        <span class="card-label">Remarques / Instructions :</span>
+        <span class="card-value">{{ notes }}</span>
+    </div>
+    {% endif %}
+</div>
+
+{% if meetingUrl %}
+<div style="text-align: center; margin: 25px 0;">
+    <a href="{{ meetingUrl }}" class="btn" target="_blank">Rejoindre la réunion en ligne</a>
+</div>
+{% endif %}
+
+<p>Merci de vous connecter quelques minutes avant l'heure prévue et de vous munir d'une pièce d'identité ou de votre CV à jour.</p>
+
+<p>À très bientôt,<br>L'équipe Recrutement TalentConnect</p>
+{% endblock %}
+

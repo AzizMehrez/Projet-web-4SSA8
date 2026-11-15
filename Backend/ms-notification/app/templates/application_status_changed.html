@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Mise à jour de votre candidature #{{ applicationId }} — TalentConnect{% endblock %}
+
+{% block content %}
+<h2>Bonjour {{ candidateName | default("Candidat") }},</h2>
+
+<p>Le statut de votre candidature sur la plateforme <strong>TalentConnect</strong> a été mis à jour par l'équipe de recrutement.</p>
+
+<div class="card">
+    <div class="card-row">
+        <span class="card-label">Numéro de candidature :</span>
+        <span class="card-value">#{{ applicationId }}</span>
+    </div>
+    {% if jobTitle %}
+    <div class="card-row">
+        <span class="card-label">Poste concerné :</span>
+        <span class="card-value"><strong>{{ jobTitle }}</strong></span>
+    </div>
+    {% endif %}
+    <div class="card-row">
+        <span class="card-label">Ancien statut :</span>
+        <span class="card-value"><span class="badge badge-warning">{{ fromStatus }}</span></span>
+    </div>
+    <div class="card-row">
+        <span class="card-label">Nouveau statut :</span>
+        <span class="card-value"><span class="badge badge-success">{{ toStatus }}</span></span>
+    </div>
+    <div class="card-row">
+        <span class="card-label">Date de mise à jour :</span>
+        <span class="card-value">{{ occurredAt }}</span>
+    </div>
+</div>
+
+<p>Vous pouvez consulter les détails de votre candidature sur votre espace candidat.</p>
+
+<p>Cordialement,<br>L'équipe Recrutement TalentConnect</p>
+{% endblock %}
+

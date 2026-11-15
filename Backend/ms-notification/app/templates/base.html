@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TalentConnect Notification{% endblock %}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7fa;
+            color: #2d3748;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+        .header {
+            background: linear-gradient(135deg, #0b1f44 0%, #1e40af 100%);
+            color: #ffffff;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .header p {
+            margin: 8px 0 0;
+            font-size: 14px;
+            color: #bfdbfe;
+        }
+        .content {
+            padding: 32px 28px;
+        }
+        .card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .card-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #edf2f7;
+            font-size: 14px;
+        }
+        .card-row:last-child {
+            border-bottom: none;
+        }
+        .card-label {
+            font-weight: 600;
+            color: #4a5568;
+        }
+        .card-value {
+            color: #1a202c;
+            font-weight: 500;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge-success { background-color: #def7ec; color: #03543f; }
+        .badge-primary { background-color: #dbeafe; color: #1e40af; }
+        .badge-warning { background-color: #fef3c7; color: #92400e; }
+        .badge-danger  { background-color: #fee2e2; color: #991b1b; }
+        .btn {
+            display: inline-block;
+            background: #1e40af;
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .footer {
+            background-color: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #718096;
+        }
+        .footer p {
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>TalentConnect</h1>
+            <p>Plateforme de Recrutement AWD · ESPRIT 2026-2027</p>
+        </div>
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="footer">
+            <p>Cet e-mail a été envoyé automatiquement par le service <strong>ms-notification</strong>.</p>
+            <p>Merci de ne pas répondre directement à ce message.</p>
+            <p>&copy; 2026 TalentConnect — Tous droits réservés.</p>
+        </div>
+    </div>
+</body>
+</html>
+
