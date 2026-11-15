@@ -14,7 +14,7 @@ Plateforme de recrutement découpée en microservices Spring Cloud + un service 
 | Maryem Slatni | `ms-application` |
 | Mohamed Ezzedine Zouiten | `ms-interview` |
 | Dhia Jbali | `ms-notification` (avancé) |
-| **Samer** | Plateforme : API Gateway, Eureka, Config Server, Keycloak, Compose |
+| **Samer mfarrej** | Plateforme : API Gateway, Eureka, Config Server, Keycloak, Compose |
 
 ## Architecture (résumé)
 
@@ -149,3 +149,10 @@ Profils sans Docker DB : `h2` (candidate/job/application), `nodb` (interview). N
 | Self-audit grille | `Documentation/SELF_AUDIT.md` |
 | Diagrammes | `Documentation/Diagrams/*.mmd` + `.svg` |
 | Présentation 12 slides | `Documentation/Presentation/Validation1-JobBoard.pptx` |
+
+### 🛠️ Votre Focus : La Plateforme Technique (Samer Mfarej)
+Le cœur de la communication et de la sécurité des microservices repose sur :
+- **Eureka Server** (`:8761`) : Assure l'enregistrement dynamique de tous les services (`ms-candidate`, `ms-job`, etc.).
+- **API Gateway** (`:8080`) : Route les requêtes entrantes vers les bons services via le discovery (`lb://...`).
+- **Config Server** (`:8888`) : Centralise les configurations des services.
+- **Keycloak** (`:8180`) : Fournit la couche d'authentification et de gestion des accès cibles (JWT).
